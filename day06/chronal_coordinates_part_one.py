@@ -11,6 +11,41 @@ def print_grid(grid):
 	print "###################"
 	print
 
+def find_infinite_locations(grid):
+        inf_locations = []
+        for x in range(len(grid)):
+            if grid[x][0] not in inf_locations:
+                inf_locations.append(grid[x][0])
+        for x in range(len(grid)):
+            if grid[x][len(grid)-1] not in inf_locations:
+                inf_locations.append(grid[x][len(grid)-1])
+            
+        for y in range(len(grid)):
+            if grid[0][y] not in inf_locations:
+                inf_locations.append(grid[0][y])
+        for y in range(len(grid)):
+            if grid[len(grid)-1][y] not in inf_locations:
+                inf_locations.append(grid[len(grid)-1][y])
+
+        return inf_locations
+
+def get_largest_contained_area(infinite_locations, grid):
+    contained_areas = {}
+    for y in range(len(grid)):
+	for x in range(len(grid)):
+            if grid[x][y] not in infinite_locations:
+                if grid[x][y] not in contained_areas:
+                    contained_areas[grid[x][y]] = 1
+                else:
+                    contained_areas[grid[x][y]] += 1
+    print contained_areas
+    max_size = -1
+    for contained_area, size in contained_areas.items():
+        if size > max_size:
+            max_size = size
+            
+    return max_size
+
 
 def get_closest_ambiguous_coordinate(ambiguous_coordinate_list, x, y):	
 	id_of_closest_ambig_coordinate = -1
@@ -33,7 +68,7 @@ def get_closest_ambiguous_coordinate(ambiguous_coordinate_list, x, y):
 
 
 
-coordinate_list = open('testinput.txt', 'r')
+coordinate_list = open('input.txt', 'r')
 
 
 # abs |x2 - x1 | + |y2 -y1|
@@ -72,6 +107,12 @@ for x in range(len(grid)):
 
 print_grid(grid)
 
+infinite_locations = find_infinite_locations(grid)
+print infinite_locations
+
+largest_contained_area =  get_largest_contained_area(infinite_locations, grid)
+
+print "Largest contained area size is " + str(largest_contained_area)
 #TODO find finate_locations and largest one
 
 
